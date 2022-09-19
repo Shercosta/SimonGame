@@ -31,6 +31,11 @@ body {
   opacity: 0.8;
 }
 
+.jumpscare {
+  width: 100vh;
+  /* visibility: collapse; */
+}
+
 .red {
   background-color: red;
 }
