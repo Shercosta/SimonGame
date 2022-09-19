@@ -1,3 +1,5 @@
+$(".jumpscare").hide();
+
 var buttonColours = ["red", "blue", "green", "yellow"];
 
 var gamePattern = [];
@@ -5,6 +7,8 @@ var userClickedPattern = [];
 
 var started = false;
 var level = 0;
+
+var isTen = false;
 
 $(document).keypress(function () {
   if (!started) {
@@ -23,8 +27,17 @@ $(".btn").click(function () {
   animatePress(userChosenColour);
 
   //2. Call checkAnswer() after a user has clicked and chosen their answer, passing in the index of the last answer in the user's sequence.
+  if(userClickedPattern.length == 10 && isTen == false){
+    isTen = true;
+    playSound("jump");
+    $(".jumpscare").toggle()
+    setTimeout(() => {
+      $(".jumpscare").toggle();
+    }, 1000);
+  }
   checkAnswer(userClickedPattern.length - 1);
 });
+
 
 
 //1. Create a new function called checkAnswer(), it should take one input with the name currentLevel
@@ -39,9 +52,16 @@ function checkAnswer(currentLevel) {
     if (userClickedPattern.length === gamePattern.length) {
 
       //5. Call nextSequence() after a 1000 millisecond delay.
-      setTimeout(function () {
-        nextSequence();
-      }, 1000);
+      if(gamePattern.length == 10){
+        setTimeout(function () {
+          nextSequence();
+        }, 3000);
+  
+      } else {
+        setTimeout(function () {
+          nextSequence();
+        }, 1000);
+      }
 
     }
 
@@ -50,7 +70,7 @@ function checkAnswer(currentLevel) {
     playSound("wrong");
     console.log("wrong");
     $("body").addClass("game-over");
-    setTimeout(function() {
+    setTimeout(function () {
       $("body").removeClass("game-over");
     }, 200)
     $("#level-title").text("Game Over, Press Any Key to Restart")
